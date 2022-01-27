@@ -1,34 +1,7 @@
-import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import { Box, Button, Text, TextField, Image, Icon } from '@skynexui/components';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router'; 
 import appConfig from '../config.json';
-
-function GlobalStyle() {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: 'Open Sans', sans-serif;
-      }
-      /* App fit Height */ 
-      html, body, #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      /* ./App fit Height */ 
-    `}</style>
-  );
-}
 
 function Titulo(props) {
   const Tag = props.tag || 'h1';
@@ -60,11 +33,42 @@ function Titulo(props) {
 // export default HomePage
 
 export default function PaginaInicial() {
-  const username = 'BeaReis';
+  //const username = 'BeaReis';
+  const roteamento = useRouter();
+  const [username, setUsername] = React.useState('');
+  const [followers, setFollowers] = React.useState('');
+  const [repos, setRepos] = React.useState('');
+  const [avatar, setAvatar] = React.useState('');
+  const [visibility, setVisibility] = React.useState(false);
+
+  /***  'useEffect' é um 'Hook'(funções que permitem “ligar-se” aos recursos de state e 
+  ciclo de vida do React a partir de componentes funcionais). Ele permite expressar diferentes
+  tipos de efeitos colaterais depois que o componente renderiza.  ***/
+
+  useEffect(() => {
+    fetch(`https://api.github.com/users/${username}`, {
+      headers: new Headers({
+        'User-agent': 'agent-name'
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        setData(data);
+      });
+  });
+
+  const setData = ({ followers, public_repos, avatar_url }) => {
+    setFollowers(followers);
+    setRepos(public_repos);
+    username.length > 2 ? setAvatar(avatar_url) : setAvatar('');
+  }
+
+function handleVisibility(valor) {
+    valor != "" ? setVisibility(true) : setVisibility(false);
+  }
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -82,6 +86,8 @@ export default function PaginaInicial() {
               sm: 'row',
             },
             width: '100%', maxWidth: '700px',
+            border: '1px solid',
+            borderColor: appConfig.theme.colors.primary[400],
             borderRadius: '5px', padding: '32px', margin: '16px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
             backgroundColor: appConfig.theme.colors.neutrals[700],
@@ -90,6 +96,13 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function(infosDoEvento) {
+              infosDoEvento.preventDefault();
+              console.log('Alguém submeteu o form');
+              roteamento.push('/chat');
+              //window.location.href= '/chat';
+
+            }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -100,7 +113,22 @@ export default function PaginaInicial() {
               {appConfig.name}
             </Text>
 
+
+            {/* <input
+              type="text"
+              value={username}
+              onChange={function handler (event) {
+                const valor = event.target.value;
+                setUsername(valor);
+              }}
+            /> */}
             <TextField
+            value={username}
+            onChange={function handler (event) {
+              const valor = event.target.value;
+              setUsername(valor);
+              handleVisibility(valor);
+            }}
               fullWidth
               textFieldColors={{
                 neutral: {
@@ -135,8 +163,6 @@ export default function PaginaInicial() {
               maxWidth: '200px',
               padding: '16px',
               backgroundColor: appConfig.theme.colors.neutrals[800],
-              border: '1px solid',
-              borderColor: appConfig.theme.colors.primary[400],
               borderRadius: '10px',
               flex: 1,
               minHeight: '240px',
@@ -147,21 +173,46 @@ export default function PaginaInicial() {
                 borderRadius: '50%',
                 marginBottom: '16px',
               }}
-              src={`https://github.com/${username}.png`}
+              src={avatar}
             />
+            {visibility && (
+              <>
             <Text
               variant="body4"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[300],
                 backgroundColor: appConfig.theme.colors.neutrals[900],
+                textAlign: 'center',
                 padding: '3px 10px',
                 borderRadius: '1000px',
                 border: '1px solid',
                 borderColor: appConfig.theme.colors.primary[400],
               }}
-            >
-              {username}
+            > 
+            {username} 
             </Text>
+            <Text
+            variant='body4'
+              styleSheet={{
+                color: appConfig.theme.colors.neutrals[300],
+                textAlign: 'center',
+                padding: '5px 10px',
+              }}  
+            >
+            📁 Repositories: {repos}
+            </Text>
+            <Text
+            variant='body4'
+              styleSheet={{
+                color: appConfig.theme.colors.neutrals[300],
+                textAlign: 'center',
+                padding: '1px 10px',
+              }}  
+            >
+            👥 Followers: {followers}
+            </Text>
+            </>
+            )}
           </Box>
           {/* Photo Area */}
         </Box>
