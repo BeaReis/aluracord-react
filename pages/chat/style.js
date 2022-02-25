@@ -8,7 +8,7 @@ export const Box = styled.div`
   padding: 2rem;
   border: 1px solid ${appConfig.theme.colors.primary[300]};
   background-color: ${appConfig.theme.colors.neutrals[100]};
-  margin: 10% 10%;
+  margin: auto 10%;
   @media (max-width: 800px) {
     margin: 5%;
     grid-template-columns: 80% 20%; 
@@ -41,10 +41,27 @@ export const Title = styled.p`
 export const ChatArea = styled.div`
   background-color: ${appConfig.theme.colors.neutrals[200]};
   width: 100%;
+  height: 50vh;
   padding: 2rem;
   margin: 1rem 0 1rem 0;
   border-radius: 5px;
   grid-column: 1 / span 2;
+  overflow: scroll;
+`;
+
+export const MessageBox = styled.div`
+  width: fit-content;
+  margin-bottom: 5px;
+`;
+
+export const Wrapper = styled.div`
+  display: grid;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  background-color: ${appConfig.theme.colors.neutrals[100]};
+  opacity: ${props => props.key = 0 ? '0' : '1'};
+  border-radius: 10px;
+
 `;
 
 export const Image = styled.img`
@@ -52,21 +69,27 @@ export const Image = styled.img`
   height: 20px;
   border-radius: 50%;
   margin: 5px;
+  grid-column: 1;
+  grid-row: 1;
 `;
 
 export const Message = styled.p`
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: ${props => props.date ? '8px' : '12px'};
-  margin: 5px;
+  grid-column: ${props => props.date ? '3' : '1 / span 3'};
+  grid-row: ${props => props.date ? '1' : '2'};
+  color: ${appConfig.theme.colors.primary[100]};
+  margin: ${props => props.date ? '10px 0 5px 10px' : '5px'};
 
 `;
 
 export const Profile = styled.p`
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 12px;
-`;
-
-export const MessageBox = styled.div`
+  color: ${appConfig.theme.colors.primary[200]};
+  grid-column: 2;
+  grid-row: 1;
+  margin: 7.5px 0 5px 5px;
 `;
 
 export const Input = styled.textarea`
