@@ -12,7 +12,7 @@ import {
   MessageBox,
   Profile,
   Wrapper
-} from "./style";
+} from "../styles/chat";
 
 function Chat() {
   const roteamento = useRouter();

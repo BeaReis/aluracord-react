@@ -7,8 +7,8 @@ import {
   Text,
   Profile,
   PhotoArea,
-} from "./style";
-import { apiData } from "../../services/github";
+} from "../styles/homePage";
+import { apiData } from "../services/github";
 import { useRouter } from "next/router";
 
 function HomePage() {
@@ -63,7 +63,7 @@ function HomePage() {
               if (username === "") {
                 alert("User not found!");
               } else {
-                roteamento.push(`/chat/chat?username=${username}`);
+                roteamento.push(`/chat?username=${username}`);
               }
             }}
           >

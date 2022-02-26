@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import appConfig from "../../config.json";
+import appConfig from "../config.json";
 
 // Outer Container
 export const Box = styled.div`

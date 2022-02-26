@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import appConfig from "../../config.json";
+import appConfig from "../config.json";
 
 // Outer Container
 export const Box = styled.div`
@@ -17,6 +17,7 @@ export const Box = styled.div`
   box-shadow: 0 2px 10px 0 rgb(0 0 0 / 20%);
 `;
 
+// Button to go back to first screen
 export const BackButton = styled.button`
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   padding: 0.5rem 0;
@@ -30,6 +31,7 @@ export const BackButton = styled.button`
   background-color: ${appConfig.theme.colors.primary[300]};
 `;
 
+// 'Chat' text
 export const Title = styled.p`
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 20px;
