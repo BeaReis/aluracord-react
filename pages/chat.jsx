@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   BackButton,
@@ -11,43 +11,74 @@ import {
   Image,
   MessageBox,
   Profile,
-  Wrapper
+  Wrapper,
+  DeleteButton,
+  FlexWrapper
 } from "../styles/chat";
 
 function Chat() {
-  const roteamento = useRouter();
-  const [mensagem, setMensagem] = React.useState("");
-  const [listaDeMsgs, setListaDeMsgs] = React.useState([]);
-  const username = roteamento.query.username;
+  const routing = useRouter();
+  const [message, setMessage] = React.useState("");
+  const [msgList, setMsgList] = React.useState([]);
+  const username = routing.query.username;
 
-  function handleNovaMensagem(novaMensagem) {
-    const mensagem = {
-      id: listaDeMsgs.length + 1,
-      de: username,
-      texto: novaMensagem,
+  function handleNewMessage(newMessage) {
+    const message = {
+      id: msgList.length + 1,
+      from: username,
+      text: newMessage,
     };
 
-    setListaDeMsgs([...listaDeMsgs, mensagem]);
-    setMensagem("");
+    setMsgList([...msgList, message]);
+    setMessage("");
   }
 
+  function deleteMessage(id) {
+    msgList.forEach(element => {
+      if(element.id === id) {
+        const index = msgList.indexOf(element);
+        msgList.splice(index, 1);
+        setMsgList([...msgList]);
+      }
+    });
+  }
+
+  // Use Effect 
+  useEffect(() => {
+    setMsgList(msgList);
+  }, [msgList]);
+ 
+
   function MessageList(props) {
+
     return (
       <>
         <MessageBox>
-          {props.mensagem.map((mensagem) => {
+          {props.message.map((message) => {
             return (
-              <Wrapper key={mensagem.id}>
+              <Wrapper key={message.id}>
+                <FlexWrapper>
                 <Image src={`https://github.com/${username}.png`}></Image>
-                <Profile>{mensagem.de}</Profile>
+                <Profile>{message.from}</Profile>
                 <Message date>{new Date().toLocaleDateString("pt-BR")}</Message>
-                <Message>{mensagem.texto}</Message>
+                <DeleteButton
+                  onClick={() => {
+                    deleteMessage(message.id);
+                  }}
+                >
+                  x
+                </DeleteButton>
+                </FlexWrapper>
+                <FlexWrapper>
+                  <Message>{message.text}</Message>
+                </FlexWrapper>
               </Wrapper>
             );
           })}
         </MessageBox>
       </>
     );
+    
   }
 
   return (
@@ -57,32 +88,32 @@ function Chat() {
         <BackButton
           onClick={function (event) {
             event.preventDefault();
-            roteamento.push("../homePage/homePage");
+            routing.push("/homePage");
           }}
         >
-          Voltar
+          Back
         </BackButton>
         <ChatArea>
-          <MessageList mensagem={listaDeMsgs} />
+          <MessageList message={msgList} />
         </ChatArea>
         <Input
-          placeholder="Insira sua mensagem aqui..."
-          value={mensagem}
+          placeholder="Write a message..."
+          value={message}
           onChange={(event) => {
-            const valor = event.target.value;
-            setMensagem(valor);
+            const value = event.target.value;
+            setMessage(value);
           }}
           onKeyPress={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
-              handleNovaMensagem(mensagem);
+              handleNewMessage(message);
             }
           }}
         />
         <SendButton
           emote
           onClick={() => {
-            console.log(mensagem.id);
+            console.log(message.id);
           }}
         >
           Emoji 🙂
@@ -90,10 +121,10 @@ function Chat() {
         <SendButton
           onClick={(event) => {
             event.preventDefault();
-            handleNovaMensagem(mensagem);
+            handleNewMessage(message);
           }}
         >
-          Enviar ✉️
+          Send ✉️
         </SendButton>
       </Box>
     </>
