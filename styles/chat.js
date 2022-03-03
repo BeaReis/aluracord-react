@@ -5,6 +5,7 @@ import appConfig from "../config.json";
 export const Box = styled.div`
   display: grid;
   grid-template-columns: 90% 10%; 
+  width: 90vw;
   padding: 2rem;
   border: 1px solid ${appConfig.theme.colors.primary[300]};
   background-color: ${appConfig.theme.colors.neutrals[100]};
@@ -24,7 +25,6 @@ export const BackButton = styled.button`
   border-radius: 5px;
   color: white;
   border: none;
-  margin: 0 0 0.5rem 1rem;
   grid-column: 2;
   grid-row: 1;
   cursor: pointer;
@@ -57,13 +57,21 @@ export const MessageBox = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  display: grid;
-  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 5px;
+  width: fit-content;
   margin-bottom: 10px;
   background-color: ${appConfig.theme.colors.neutrals[100]};
   opacity: ${props => props.key = 0 ? '0' : '1'};
   border-radius: 10px;
+`;
 
+export const FlexWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 export const Image = styled.img`
@@ -71,15 +79,26 @@ export const Image = styled.img`
   height: 20px;
   border-radius: 50%;
   margin: 5px;
-  grid-column: 1;
-  grid-row: 1;
+  display: flex;
+`;
+
+export const DeleteButton = styled.button`
+  background-color: ${appConfig.theme.colors.neutrals[100]};
+  color: white;
+  display: flex;
+  border-radius: 5px;
+  padding: 0 0.3rem 0.2rem 0.3rem;
+  vertical-align: center;
+  cursor: pointer;
+  margin: 5px 5px 5px 15px;
+  border: 1px solid ${appConfig.theme.colors.primary[300]};
+  text-align: center;
 `;
 
 export const Message = styled.p`
+  display: flex;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: ${props => props.date ? '8px' : '12px'};
-  grid-column: ${props => props.date ? '3' : '1 / span 3'};
-  grid-row: ${props => props.date ? '1' : '2'};
   color: ${appConfig.theme.colors.primary[100]};
   margin: ${props => props.date ? '10px 0 5px 10px' : '5px'};
 
@@ -89,8 +108,6 @@ export const Profile = styled.p`
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 12px;
   color: ${appConfig.theme.colors.primary[200]};
-  grid-column: 2;
-  grid-row: 1;
   margin: 7.5px 0 5px 5px;
 `;
 
@@ -116,7 +133,7 @@ export const SendButton = styled.button`
   cursor: pointer;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: white;
-  margin: ${props => props.emote ? '0 0 0.25rem 1rem' : '0.25rem 0 0 1rem'};
+  margin: ${props => props.emote ? '0 0 0.25rem 0.5rem' : '0.25rem 0 0 0.5rem'};
   background-color: ${appConfig.theme.colors.primary[300]};
   grid-column: 2;
   grid-row: ${props => props.emote ? '3' : '4'};
