@@ -13,44 +13,68 @@ import {
   Profile,
   Wrapper,
   DeleteButton,
-  FlexWrapper
+  FlexWrapper,
 } from "../styles/chat";
+import { createClient } from "@supabase/supabase-js";
 
-function Chat() {
+/* NextJS recommends using 'getStaticProps' to load environment variables. */
+export function getStaticProps() {
+  const supabaseUrl = "https://" + process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_KEY;
+
+  return {
+    props: {
+      supabaseUrl,
+      supabaseKey,
+    },
+  };
+}
+
+function Chat({ supabaseUrl, supabaseKey }) {
   const routing = useRouter();
   const [message, setMessage] = React.useState("");
   const [msgList, setMsgList] = React.useState([]);
   const username = routing.query.username;
 
+  const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
   function handleNewMessage(newMessage) {
     const message = {
-      id: msgList.length + 1,
+      // id: msgList.length + 1,
       from: username,
       text: newMessage,
     };
 
-    setMsgList([...msgList, message]);
+    supabaseClient
+      .from("messages")
+      .insert([message])
+      .then(({ data }) => {
+        setMsgList([...msgList, data[0]]);
+      });
+
     setMessage("");
   }
-
-  function deleteMessage(id) {
-    msgList.forEach(element => {
-      if(element.id === id) {
-        const index = msgList.indexOf(element);
-        msgList.splice(index, 1);
-        setMsgList([...msgList]);
-      }
-    });
+  async function deleteMessage(id) {
+    await supabaseClient
+      .from("messages")
+      .delete()
+      .match({id: id});
+    setMsgList(msgList.filter((message) => message.id != id));
   }
 
-  // Use Effect 
+  /* The useEffect Hook enable changes after render */
   useEffect(() => {
-    setMsgList(msgList);
-  }, [msgList]);
- 
 
+    supabaseClient
+      .from("messages")
+      .select("*")
+      .then(({ data }) => {
+        setMsgList(data);
+      });
+  }, []);
+
+  /* This component  */
   function MessageList(props) {
-
     return (
       <>
         <MessageBox>
@@ -58,16 +82,18 @@ function Chat() {
             return (
               <Wrapper key={message.id}>
                 <FlexWrapper>
-                <Image src={`https://github.com/${username}.png`}></Image>
-                <Profile>{message.from}</Profile>
-                <Message date>{new Date().toLocaleDateString("pt-BR")}</Message>
-                <DeleteButton
-                  onClick={() => {
-                    deleteMessage(message.id);
-                  }}
-                >
-                  x
-                </DeleteButton>
+                  <Image src={`https://github.com/${message.from}.png`}></Image>
+                  <Profile>{message.from}</Profile>
+                  <Message date>
+                    {new Date().toLocaleDateString("pt-BR")}
+                  </Message>
+                  <DeleteButton
+                    onClick={() => {
+                      deleteMessage(message.id);
+                    }}
+                  >
+                    x
+                  </DeleteButton>
                 </FlexWrapper>
                 <FlexWrapper>
                   <Message>{message.text}</Message>
@@ -78,7 +104,6 @@ function Chat() {
         </MessageBox>
       </>
     );
-    
   }
 
   return (
