@@ -40,12 +40,12 @@ function Chat() {
     setMessage("");
   }
 
-  function deleteMessage(id) {
-    supabase
+  async function deleteMessage(id) {
+    await supabase
       .from("messages")
       .delete()
       .match({id: id});
-    setMsgList(msgList.filter((message) => message.id != id));
+      setMsgList(msgList.filter((message) => message.id != id));
   }
 
   /* The useEffect Hook enable changes after render */
