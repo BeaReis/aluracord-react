@@ -15,28 +15,13 @@ import {
   DeleteButton,
   FlexWrapper,
 } from "../styles/chat";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabaseClient";
 
-/* NextJS recommends using 'getStaticProps' to load environment variables. */
-export function getStaticProps() {
-  const supabaseUrl = "https://" + process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_KEY;
-
-  return {
-    props: {
-      supabaseUrl,
-      supabaseKey,
-    },
-  };
-}
-
-function Chat({ supabaseUrl, supabaseKey }) {
+function Chat() {
   const routing = useRouter();
   const [message, setMessage] = React.useState("");
   const [msgList, setMsgList] = React.useState([]);
   const username = routing.query.username;
-
-  const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
   function handleNewMessage(newMessage) {
     const message = {
@@ -45,7 +30,7 @@ function Chat({ supabaseUrl, supabaseKey }) {
       text: newMessage,
     };
 
-    supabaseClient
+    supabase
       .from("messages")
       .insert([message])
       .then(({ data }) => {
@@ -54,8 +39,9 @@ function Chat({ supabaseUrl, supabaseKey }) {
 
     setMessage("");
   }
-  async function deleteMessage(id) {
-    await supabaseClient
+
+  function deleteMessage(id) {
+    supabase
       .from("messages")
       .delete()
       .match({id: id});
@@ -64,8 +50,8 @@ function Chat({ supabaseUrl, supabaseKey }) {
 
   /* The useEffect Hook enable changes after render */
   useEffect(() => {
-
-    supabaseClient
+    /* Uses supabase database to set the msg list */
+    supabase
       .from("messages")
       .select("*")
       .then(({ data }) => {
@@ -73,7 +59,7 @@ function Chat({ supabaseUrl, supabaseKey }) {
       });
   }, []);
 
-  /* This component  */
+  /* This is a sub-component that composes the list of messages  */
   function MessageList(props) {
     return (
       <>
@@ -106,6 +92,7 @@ function Chat({ supabaseUrl, supabaseKey }) {
     );
   }
 
+  /* This is the main component. It ties all of the styled-components together to compose the chat. */
   return (
     <>
       <Box>

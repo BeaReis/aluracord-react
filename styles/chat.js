@@ -3,8 +3,8 @@ import appConfig from "../config.json";
 
 // Outer Container
 export const Box = styled.div`
-  display: grid;
-  grid-template-columns: 90% 10%; 
+  display: grid;  
+  grid-template-columns: 90% 10%;
   width: 90vw;
   padding: 2rem;
   border: 1px solid ${appConfig.theme.colors.primary[300]};
@@ -12,7 +12,7 @@ export const Box = styled.div`
   margin: auto 10%;
   @media (max-width: 800px) {
     margin: 5%;
-    grid-template-columns: 80% 20%; 
+    grid-template-columns: 80% 20%;
   }
   border-radius: 5px;
   box-shadow: 0 2px 10px 0 rgb(0 0 0 / 20%);
@@ -20,7 +20,7 @@ export const Box = styled.div`
 
 // Button to go back to first screen
 export const BackButton = styled.button`
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   padding: 0.5rem 0;
   border-radius: 5px;
   color: white;
@@ -33,7 +33,7 @@ export const BackButton = styled.button`
 
 // 'Chat' text
 export const Title = styled.p`
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: 20px;
   grid-column: 1;
   grid-row: 1;
@@ -63,7 +63,7 @@ export const Wrapper = styled.div`
   width: fit-content;
   margin-bottom: 10px;
   background-color: ${appConfig.theme.colors.neutrals[100]};
-  opacity: ${props => props.key = 0 ? '0' : '1'};
+  opacity: ${(props) => (props.key = 0 ? "0" : "1")};
   border-radius: 10px;
 `;
 
@@ -97,15 +97,14 @@ export const DeleteButton = styled.button`
 
 export const Message = styled.p`
   display: flex;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: ${props => props.date ? '8px' : '12px'};
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: ${(props) => (props.date ? "8px" : "12px")};
   color: ${appConfig.theme.colors.primary[100]};
-  margin: ${props => props.date ? '10px 0 5px 10px' : '5px'};
-
+  margin: ${(props) => (props.date ? "10px 0 5px 10px" : "5px")};
 `;
 
 export const Profile = styled.p`
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: 12px;
   color: ${appConfig.theme.colors.primary[200]};
   margin: 7.5px 0 5px 5px;
@@ -131,10 +130,11 @@ export const SendButton = styled.button`
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   color: white;
-  margin: ${props => props.emote ? '0 0 0.25rem 0.5rem' : '0.25rem 0 0 0.5rem'};
+  margin: ${(props) =>
+    props.emote ? "0 0 0.25rem 0.5rem" : "0.25rem 0 0 0.5rem"};
   background-color: ${appConfig.theme.colors.primary[300]};
   grid-column: 2;
-  grid-row: ${props => props.emote ? '3' : '4'};
+  grid-row: ${(props) => (props.emote ? "3" : "4")};
 `;
