@@ -7,8 +7,8 @@ import {
   Text,
   Profile,
   PhotoArea,
-} from "../styles/homePage";
-import { apiData } from "../services/github";
+} from "../src/styles/HomePage";
+import { apiData } from "../src/services/github";
 import { useRouter } from "next/router";
 
 function HomePage() {
@@ -60,6 +60,16 @@ function HomePage() {
               setUsername(value);
               handleVisibility(value);
               handleChange(value);
+            }}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                if (username === "") {
+                  alert("User not found!");
+                } else {
+                  routing.push(`/chat?username=${username}`);
+                }
+              }
             }}
           />
           <Button
