@@ -40,7 +40,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Image = styled.img`
-    width: 100px;
+    width: 125px;
     margin: auto;
     cursor: pointer;
 `;

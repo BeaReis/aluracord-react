@@ -140,3 +140,7 @@ export const SendButton = styled.button`
   grid-column: 2;
   grid-row: ${(props) => (props.sticker ? "3" : "4")};
 `;
+
+export const Sticker = styled.img`
+  width: 150px;
+`;
