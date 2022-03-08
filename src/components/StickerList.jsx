@@ -1,8 +1,7 @@
 import { Box, Wrapper, Text, Image } from '../styles/StickerList';
 import appConfig from '../../config.json';
 
-function StickerList() {
-    
+function StickerList(props) {
 
     return(
     <>
@@ -11,8 +10,8 @@ function StickerList() {
         <Wrapper>
             {appConfig.stickers.map((sticker) => (
                 <Text onClick={() => {
-                    if(props.onStickerClick === true) {
-                        props.onStickerClick(sticker);
+                    if(Boolean(props.onStickerClick)) {
+                        props.onStickerClick(sticker)
                     }
                 }}
                 key={sticker}>
