@@ -59,7 +59,7 @@ function Chat() {
       });
   }, []);
 
-  /* This is a sub-component that composes the list of messages  */
+  /* This is a component that composes the list of messages  */
   function MessageList(props) {
     return (
       <>
@@ -82,7 +82,15 @@ function Chat() {
                   </DeleteButton>
                 </FlexWrapper>
                 <FlexWrapper>
-                  <Message>{message.text}</Message>
+                  <Message>
+                    {message.text.startsWith(":sticker:") ? (
+                      <Sticker sticker
+                        src={message.text.replace(":sticker:", "")}
+                      />
+                    ) : (
+                      message.text
+                    )}
+                  </Message>
                 </FlexWrapper>
               </Wrapper>
             );
@@ -122,12 +130,17 @@ function Chat() {
             }
           }}
         />
-        {isOpen && <StickerList />}
+        {isOpen && (
+          <StickerList
+            onStickerClick={(img) => {
+              handleNewMessage(":sticker:" + img);
+            }}
+          />
+        )}
         <SendButton
           sticker
           onClick={() => {
             setOpenState(!isOpen);
-            
           }}
         >
           Sticker 🙂
