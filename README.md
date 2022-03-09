@@ -5,6 +5,7 @@ This challenge was provided by @Alura's React Mini Bootcamp.
 This simple chat app uses the user's github username to access the chat page. The messages can be text or gifs/stickers and also can be sent and deleted in real time. 
 
 ⚠️The app does not provide any authentication so users can use any github username.
+
 ⚠️The messages can be deleted by any user.
 #
 ### Stacks:
