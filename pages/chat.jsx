@@ -14,6 +14,7 @@ import {
   Wrapper,
   DeleteButton,
   FlexWrapper,
+  Sticker,
 } from "../src/styles/Chat";
 import StickerList from "../src/components/StickerList";
 import { supabase } from "../src/services/supabaseClient";
