@@ -8,6 +8,11 @@ This simple chat app uses the user's github username to access the chat page. Th
 
 ⚠️The messages can be deleted by any user.
 #
+### Links and Screenshot
+-> [Ghiblicord]()
+
+![Gif showing the app](https://github.com/BeaReis/aluracord-react/blob/main/public/ghinlicord.gif)
+#
 ### Stacks:
 - React
 - Styled Components 💅
