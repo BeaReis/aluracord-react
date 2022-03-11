@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   BackButton,
@@ -56,10 +56,7 @@ function Chat() {
 
   /* This function deletes the selected message from database and removes it from the chat */
   async function deleteMessage(id) {
-    await supabase
-      .from("messages")
-      .delete()
-      .match({ id: id });
+    await supabase.from("messages").delete().match({ id: id });
   }
 
   /* The useEffect Hook enable changes after render */
@@ -67,6 +64,7 @@ function Chat() {
     supabase
       .from("messages")
       .select("*")
+      .order('id', { ascending: true})
       .then(({ data }) => {
         setMsgList(data);
       });
@@ -157,7 +155,11 @@ function Chat() {
           onKeyPress={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
-              handleNewMessage(message);
+              if (message != "") {
+                handleNewMessage(message);
+              } else {
+                alert("Cannot send empty message");
+              }
             }
           }}
         />
@@ -179,7 +181,11 @@ function Chat() {
         <SendButton
           onClick={(event) => {
             event.preventDefault();
-            handleNewMessage(message);
+            if (message != "") {
+              handleNewMessage(message);
+            } else {
+              alert("Cannot send empty message");
+            }
           }}
         >
           Send ✉️
